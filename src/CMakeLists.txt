@@ -92,6 +92,19 @@ if(USE_CUSTOM_LIBCXX)
 endif()
 
 target_link_libraries(${LIBNAME} ${EXTRA_LIBS} ${CMAKE_DL_LIBS})
-target_include_directories(${LIBNAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../headers)
 
-install(TARGETS ${LIBNAME} DESTINATION lib)
+target_include_directories(${LIBNAME}
+  PRIVATE
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/headers>
+  PUBLIC
+  $<INSTALL_INTERFACE:include>
+  )
+
+install(TARGETS ${LIBNAME}
+  EXPORT WyvernTargets
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION include
+  )
+
